@@ -4,7 +4,7 @@ import App from "./App.tsx";
 import "./index.css";
 import { Widget } from "./widget.tsx";
 import { BillSplitter} from "./components/BillSplitter/BillSplitter.tsx";
-import { NumberInput } from "./components/NumberInput/NumberInput.tsx";
+
 import "./App.css"
 import { FinalForm } from "./components/FinalForm/FinalForm.tsx";
 
@@ -84,8 +84,10 @@ const component = (
 );  
 
 const Bill_splitter = (<FinalForm></FinalForm>)
+// const app = (<App></App>)
 
 // ReactDOM.createRoot(document.getElementById("root")!).render(fun);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(Bill_splitter);
+// ReactDOM.createRoot(document.getElementById("root")!).render(app);
 // ReactDOM.createRoot(document.getElementById("root")!).render(counter);

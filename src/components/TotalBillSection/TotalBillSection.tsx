@@ -1,5 +1,4 @@
-import styles from "./TotalBillSection.module.css";
-import "../../App.css";
+import React from "react";
 import { TipAndTotalInput } from "../TipAndTotalInput/TipAndTotalInput";
 import { ResetButton } from "../ResetButton/ResetButton";
 import { Action, State } from "../../bill_model";
@@ -7,8 +6,8 @@ import { Action, State } from "../../bill_model";
 interface TotalBillSectionProps {
   state: State;
   dispatch: React.Dispatch<Action>;
-  customIsInput:boolean
-  setcustomIsInput:React.Dispatch<React.SetStateAction<boolean>>
+  customIsInput: boolean;
+  setcustomIsInput: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export function TotalBillSection(props: TotalBillSectionProps) {
@@ -20,8 +19,8 @@ export function TotalBillSection(props: TotalBillSectionProps) {
     (Number(billAmount) + Number(props.state.selected)) / Number(noOfPeople);
 
   return (
-    <div className={styles.container}>
-      <div className={styles.parent}>
+    <div className="min-w-[305px] bg-[#00474b] rounded-[16px] flex flex-col justify-between w-full p-[59.29px] max-1100:p-[35px] max-700:p-[26px] h-full">
+      <div className="flex flex-col justify-between gap-[64px] w-full max-700:gap-[27px]">
         <TipAndTotalInput
           label="Tip Amount"
           value={
@@ -40,13 +39,15 @@ export function TotalBillSection(props: TotalBillSectionProps) {
           }
         ></TipAndTotalInput>
       </div>
-      <ResetButton
-        state={props.state}
-        dispatch={props.dispatch}
-        value="RESET"
-        customIsInput={props.customIsInput}
-        setcustomIsInput={props.setcustomIsInput}
-      ></ResetButton>
+      <div className="mt-auto  ">
+        <ResetButton
+          state={props.state}
+          dispatch={props.dispatch}
+          value="RESET"
+          customIsInput={props.customIsInput}
+          setcustomIsInput={props.setcustomIsInput}
+        />
+      </div>
     </div>
   );
 }
