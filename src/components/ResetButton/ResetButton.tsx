@@ -1,4 +1,3 @@
-import styles from "./ResetButton.module.css";
 import "../../App.css";
 import { useEffect, useState } from "react";
 import { Action, State } from "../../bill_model";
@@ -10,6 +9,7 @@ interface ResetButtonProps {
   customIsInput: boolean;
   setcustomIsInput: React.Dispatch<React.SetStateAction<boolean>>;
 }
+
 export function ResetButton({
   value,
   state,
@@ -18,9 +18,10 @@ export function ResetButton({
   setcustomIsInput,
 }: ResetButtonProps) {
   const [resetIsActive, setResetIsActive] = useState(false);
-  const handleOnClick = (e) => {
+
+  const handleOnClick = () => {
     dispatch({ type: "RESET" });
-    setcustomIsInput(false)
+    setcustomIsInput(false);
   };
 
   useEffect(() => {
@@ -30,13 +31,20 @@ export function ResetButton({
       setResetIsActive(false);
     }
   }, [state.selected, state.bill, state.person, dispatch]);
+
   return (
     <button
-      className={`${styles.container} ${resetIsActive ? styles.active : ""}`}
+      className={`flex items-center justify-center w-full font-space-mono rounded-[7px] border-none
+  ${resetIsActive ? "bg-active-resetbtn-bg-color" : "bg-inactive-resetbtn-bg-color"}`}
       disabled={!resetIsActive}
       onClick={handleOnClick}
     >
-      <div className={styles.textContainer}>{value}</div>
+      <div
+        className={`py-[13px]  text-center font-bold text-1.5rem leading-normal tracking-normal text-resetbtn-text-color
+    max-550:text-1.25rem max-1100:text-1.38rem`}
+      >
+        {value}
+      </div>
     </button>
   );
 }

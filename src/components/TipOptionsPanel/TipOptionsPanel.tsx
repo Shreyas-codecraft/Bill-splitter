@@ -1,6 +1,4 @@
-import React, { useRef } from "react";
-import styles from "./TipOptionsPanel.module.css";
-import "../../App.css";
+import React from "react";
 import { Tip } from "../Tip/Tip";
 import { Action, State } from "../../bill_model";
 
@@ -8,28 +6,30 @@ interface TipOptionsPanelProps {
   chooseTipText: string;
   state: State;
   dispatch: React.Dispatch<Action>;
-  customIsInput:boolean
-  setcustomIsInput:React.Dispatch<React.SetStateAction<boolean>>
+  customIsInput: boolean;
+  setcustomIsInput: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export function TipOptionsPanel(props: TipOptionsPanelProps) {
-  const tipValues = [5, 10, 15, 25, 50, "custom"];
-
-  const handleTipSelection = (value: string) => {
-    if ("custom" === value) {
-      props.dispatch({ type: "CUSTOM", value: true });
-      return
-    }
-    if (props.state.selected === value) {
-      props.dispatch({ type: "SET_SELECTED", value: "" });
+  const tipValues = [5, 10, 15, 25, 50, "Custom"];
+  const handleTipSelection = (value: number | string) => {
+    if (value === "Custom") {
+      props.dispatch({ type: "SET_SELECTED", value: "Custom" });
+      props.setcustomIsInput(true);
       return;
     }
-    props.dispatch({ type: "SET_SELECTED", value: JSON.stringify(value) });
+    props.setcustomIsInput(false);
+    const selectedValue = props.state.selected;
+    if (selectedValue === JSON.stringify(value)) {
+      props.dispatch({ type: "SET_SELECTED", value: JSON.stringify("") });
+    } else {
+      props.dispatch({ type: "SET_SELECTED", value: JSON.stringify(value) });
+    }
   };
 
-  const handleKeyDown = (e) => {
-    if (props.state.selected) {
-      const selectedValue = props.state.selected;
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    const selectedValue = props.state.selected;
+    if (selectedValue) {
       let index = tipValues.findIndex(
         (tip) => JSON.stringify(tip) === selectedValue
       );
@@ -38,19 +38,24 @@ export function TipOptionsPanel(props: TipOptionsPanelProps) {
 
       if (e.key === "ArrowRight") {
         index = (index + 1) % tipValues.length;
-        handleTipSelection(tipValues[index]);
       } else if (e.key === "ArrowLeft") {
         index = (index - 1 + tipValues.length) % tipValues.length;
-        handleTipSelection(tipValues[index]);
-        
       }
+
+      handleTipSelection(tipValues[index]);
     }
   };
 
   return (
-    <div className={styles.container} tabIndex={0} onKeyDown={handleKeyDown}>
-      <div className={styles.tipOptionsText}>{props.chooseTipText}</div>
-      <div className={styles.parent}>
+    <div
+      className="bg-white w-full"
+      tabIndex={0}
+      onKeyDown={handleKeyDown}
+    >
+      <div className="font-inherit font-bold text-[1.25rem] leading-[1.5] tracking-[0.1em] text-label-color mb-[24px] w-full max-1100:text-[1rem] max-550:text-[0.875rem] max-550:mb-[16px]">
+        {props.chooseTipText}
+      </div>
+      <div className="grid grid-cols-3 gap-[24px] w-full max-1100:gap-[10px] max-550:gap-[16px] max-550:grid-cols-2">
         {tipValues.map((value) => (
           <Tip
             key={value}
@@ -58,7 +63,7 @@ export function TipOptionsPanel(props: TipOptionsPanelProps) {
             dispatch={props.dispatch}
             value={value}
             onClick={() => handleTipSelection(value)}
-            isSelected={props.state.selected === JSON.stringify(value)}
+            isSelected={props.state.selected === value}
             tipValues={tipValues}
             customIsInput={props.customIsInput}
             setcustomIsInput={props.setcustomIsInput}
