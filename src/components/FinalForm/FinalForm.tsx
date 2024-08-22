@@ -1,5 +1,4 @@
 import React from "react";
-import styles from "./FinalForm.module.css";
 import "../../App.css";
 import { BillSplitter } from "../BillSplitter/BillSplitter";
 
